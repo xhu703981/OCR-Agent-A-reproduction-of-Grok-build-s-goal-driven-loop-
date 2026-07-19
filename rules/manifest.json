@@ -1,0 +1,8 @@
+{
+  "rules": [
+    "repeated_garbage_run",
+    "confusable_letter_in_number",
+    "ligature_to_f",
+    "quote_normalization"
+  ]
+}

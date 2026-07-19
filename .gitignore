@@ -1,0 +1,34 @@
+# data (local corpora / samples — not pushed)
+data/
+data.jsonl
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# runtime / run artifacts
+runs/
+goal/turns/
+goal/prog_reports/
+goal/judge_reports/
+goal/gaps.json
+goal/goal_state.json
+goal/*.log
+goal/full_pipeline_run*.log
+
+# intermediate pack / proposal dumps
+goal/fix_proposals.md
+goal/fix_proposals_draft.md
+goal/rule_pack_before_critic.md
+goal/rule_pack_prereconcile.md
+goal/rule_pack_critic_report.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
