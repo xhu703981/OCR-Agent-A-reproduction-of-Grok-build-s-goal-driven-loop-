@@ -1,22 +1,25 @@
 # Global Goal
 
-Ship a **small library of simple deterministic Python fix scripts** for common OCR artifacts in English book text — the kind of fixes that regex / light rules can handle — with **clear improvement over raw OCR**, not a perfect cleaner.
+Ship a **growing library of simple deterministic Python fix scripts** for common OCR artifacts in English book text — the kind of fixes that regex / light rules can handle — with **clear improvement over raw OCR**, not a perfect cleaner.
 
 ## Success bar
 
-- **Do what code can do**: for common artifacts that regex / light algorithms can fix
-  (confusables in context, ligature *glyphs*, junk runs, light hyphen/line joins, quotes, …),
-  mine them and ship working scripts — *we did what we could with code*.
+- **Discover many useful fixes**: mine and ship as many **safe, code-fixable** rules as practical from the samples.
+- **Core of "generality" = local safety**: a fix is good when it repairs the intended local artifact **without introducing obvious new errors elsewhere** (other tokens, clean prose, currency, intentional hyphens, bibliography/dictionary notation, etc.).
+  - Prefer under-fix when unsure.
+  - Narrow / context-limited rules are **welcome** if negatives protect clean text.
+  - Ultra-abstract "must work on every book" is **not** required.
+  - **Do not hard-gate on OCRoscope score drops**; local safety is a goal property judged from evidence (CASES negatives, smoke, critic, panel), not `n_worse == 0`.
+- **Do what code can do**: confusables in context, ligature glyphs, junk runs, hyphen/line joins, quotes, light punctuation, …
 - **Not** “fix every OCR error” (vision, layout, math semantics, full rewrite are out).
-- **Not** “ship any non-empty library” — easy code-wins left on the table count as incomplete.
-- Residual errors that *need* non-code approaches are OK; unfixed *code-easy* classes are not.
+- Residual unfixed OCR is OK.
 
 ## Approach
 
-- Mine issues from **samples** (AI can help).
+- Samples are **evidence** that a fix class exists; also allow **focused local patterns** when they recur or are classic OCR.
 - Ship fixes as **reusable scripts** (regex / rules / light algorithms), not LLM rewrite of the full corpus.
-- Prefer precision over aggressive cleanup; skip when unsure.
-- Optional: smoke on a larger local slice when available.
+- Bias to ship rules that pass mechanical safety (CASES + smoke gates) and look safe under critic/panel review.
+- Optional: smoke / OCRoscope reports for diagnosis only.
 
 ## Non-goals
 
@@ -24,4 +27,6 @@ Ship a **small library of simple deterministic Python fix scripts** for common O
 - LLM rewriting every page
 - Perfect math restoration
 - Multi-language / product UI
-- Exhaustive holdout certification or zero false positives
+- Exhaustive holdout certification or zero residual errors
+- Demanding every mined pack name ship before counting progress
+- Hard zero OCRoscope-worse as a completion gate

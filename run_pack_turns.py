@@ -19,10 +19,11 @@ ROOT = Path(__file__).resolve().parent
 PACK_PATH = ROOT / "goal" / "rule_pack.md"
 TURNS_DIR = ROOT / "goal" / "turns"
 
+# More mining: bias to discover many safe-local rules (cost-bounded)
 N_EPOCHS = 3
 TURNS_PER_EPOCH = 3
-BATCH_N = 10
-MAX_SNIP_CHARS = 400
+BATCH_N = 12
+MAX_SNIP_CHARS = 450
 RESUME_PACK = False
 
 
@@ -99,7 +100,8 @@ def upsert_pack(pack: str, rules: list[tuple[str, str]]) -> str:
         section = f"## {name}\n{body.strip()}\n"
         pat = rf"(?ms)^## {re.escape(name)}\s*\n.*?(?=^## |\Z)"
         if re.search(pat, pack):
-            pack = re.sub(pat, section + "\n", pack)
+            # lambda repl: body often contains \s \d etc.; str repl would raise
+            pack = re.sub(pat, lambda _m, s=section: s + "\n", pack)
         else:
             pack = pack.rstrip() + "\n\n" + section
     return pack.rstrip() + "\n"

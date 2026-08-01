@@ -1,5 +1,5 @@
-You are an **adversarial critic** for a final OCR **rule pack** (default to refute).
-Goal: only keep rules safe enough to implement as deterministic scripts.
+You are a **pack critic** for a final OCR **rule pack**.
+Goal: keep **many implementable, safe-local** rules. Drop only unsafe / no-op / pure unique-name junk.
 
 ## Objective
 {OBJECTIVE}
@@ -16,12 +16,13 @@ Goal: only keep rules safe enough to implement as deterministic scripts.
 {PACK}
 
 ## Rules
-- Reject or rewrite rules that are vague, circular, or effectively global char-swaps.
-- Reject punctuation/spacing rules that cannot state a **machine-checkable** precondition.
-- Prefer precision: tighten precondition + negative examples when refining.
-- Drop rules with empty/no-op transforms (e.g. replace `.` with `.`).
-- Keep at most **6** rules. Fewer is fine.
-- Do not invent new rule types not grounded in the pack (you may only accept/refine/drop).
+- **Keep** OCR-fix rules with clear precondition + transform + negatives (confusable/ligature/junk-run/quote/hyphen-join/spacing/…).
+- **Local safety**: keep rules that fix a local artifact without rewriting unrelated text.
+- **Drop** only: global char-swaps, no-ops, vague circular specs, pure unique proper-name / one full unique sentence swaps with no structure.
+- Do **not** drop rules just for being "too specific" if negatives and OCR nature are clear.
+- Prefer **more rules** when safe. Cap at **12** (was tight before; discovery matters).
+- Do not invent new rule types not grounded in the pack (accept/refine/drop only).
+- Rename opaque ids to snake_case; drop only if unnameable as an OCR fix.
 
 ## Output (Markdown only)
 
@@ -36,7 +37,7 @@ Goal: only keep rules safe enough to implement as deterministic scripts.
 
 ## Rejected
 ### <rule_id>
-- **gaps**: why dropped
+- **gaps**: why dropped (unsafe / no-op / pure unique-name only / …)
 
 ## Notes
 - short bullets

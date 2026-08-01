@@ -1,9 +1,35 @@
-"""Minimal local Ollama chat helper."""
+"""Chat helper — xAI Grok API (OpenAI-compatible).
+
+  chat(prompt, model=..., max_tokens=..., temperature=...)
+
+Reads GROK_API from env or project .env. Assumes the call succeeds.
+"""
+
+from __future__ import annotations
+
+import os
+from pathlib import Path
 
 import requests
 
-MODEL = "qwen3:8b"
-API = "http://localhost:11434"
+ROOT = Path(__file__).resolve().parent
+API = "https://api.x.ai/v1/chat/completions"
+MODEL = "grok-4.20-0309-non-reasoning"
+TIMEOUT_S = 180
+
+
+def _load_dotenv() -> None:
+    path = ROOT / ".env"
+    if not path.is_file():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        k, v = k.strip(), v.strip().strip('"').strip("'")
+        if k and k not in os.environ:
+            os.environ[k] = v
 
 
 def chat(
@@ -14,22 +40,22 @@ def chat(
     think: bool = False,
     model: str | None = None,
 ) -> str:
-    s = requests.Session()
-    s.trust_env = False  # system proxy breaks localhost
-    r = s.post(
-        f"{API}/api/chat",
+    del think
+    _load_dotenv()
+    r = requests.post(
+        API,
+        headers={
+            "Authorization": f"Bearer {os.environ['GROK_API']}",
+            "Content-Type": "application/json",
+        },
         json={
             "model": model or MODEL,
             "messages": [{"role": "user", "content": prompt}],
-            "stream": False,
-            "think": think,
-            "options": {"temperature": temperature, "num_predict": max_tokens},
+            "max_tokens": max_tokens,
+            "temperature": temperature,
         },
-        timeout=600,
+        timeout=TIMEOUT_S,
     )
     r.raise_for_status()
-    msg = r.json().get("message") or {}
-    content = (msg.get("content") or "").strip()
-    if not content and msg.get("thinking"):
-        content = str(msg["thinking"]).strip()
-    return content
+    msg = r.json()["choices"][0]["message"]
+    return (msg.get("content") or "").strip()

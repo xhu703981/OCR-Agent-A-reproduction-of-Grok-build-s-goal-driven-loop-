@@ -1,8 +1,11 @@
 {
   "rules": [
-    "repeated_garbage_run",
-    "confusable_letter_in_number",
-    "ligature_to_f",
-    "quote_normalization"
+    "confusable_ocr_f_for_s",
+    "confusable_ocr_y_for_th",
+    "confusable_ocr_minimu_n_for_m",
+    "junk_repeated_glyph_run",
+    "hyphen_line_join",
+    "quote_ocr_broken_apostrophe",
+    "junk_dot_run"
   ]
 }

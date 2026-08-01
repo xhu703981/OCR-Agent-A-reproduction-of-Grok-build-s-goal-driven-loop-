@@ -24,7 +24,7 @@ def _load(path: Path):
 
 
 def active_rule_ids() -> list[str]:
-    data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    data = json.loads(MANIFEST.read_text(encoding="utf-8-sig"))
     return list(data["rules"])
 
 

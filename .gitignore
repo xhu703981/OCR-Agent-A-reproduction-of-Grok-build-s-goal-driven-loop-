@@ -2,6 +2,9 @@
 data/
 data.jsonl
 
+# eval outputs
+eval/results/
+
 # python
 __pycache__/
 *.py[cod]
@@ -16,15 +19,19 @@ goal/prog_reports/
 goal/judge_reports/
 goal/gaps.json
 goal/goal_state.json
+goal/implementer_log.jsonl
+goal/strategy_note.md
+goal/strategy_history.md
 goal/*.log
-goal/full_pipeline_run*.log
+goal/full_pipeline*.log
 
-# intermediate pack / proposal dumps
+# intermediate pack dumps
 goal/fix_proposals.md
 goal/fix_proposals_draft.md
 goal/rule_pack_before_critic.md
 goal/rule_pack_prereconcile.md
 goal/rule_pack_critic_report.md
+goal/final_reflection_report.md
 
 # OS / editor
 .DS_Store
@@ -32,3 +39,5 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+.env

@@ -52,7 +52,6 @@ def format_batch_md(
 ) -> tuple[str, list[str]]:
     """
     Build markdown for LLM prompts. Returns (markdown, ids).
-    If n is set, indices wrap with % len(rows) (pack multi-epoch reuse).
     """
     if n is None:
         chunk = rows[start:]
